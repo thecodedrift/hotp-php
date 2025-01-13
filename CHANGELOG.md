@@ -1,8 +1,10 @@
 # Changelog
 
 # next (planned @ 2.0.1)
-- Adopts PSR-12 syntax everywhere (:heart: [jrzepa](https://github.com/jrzepa))
-- Expands version range for phpunit to ensure tests run against 7.2 [#16](https://github.com/jakobo/hotp-php/pull/16)
+- Adopts PSR-12 syntax everywhere (:heart: [jrzepa](https://github.com/jrzepa) [#12](https://github.com/thecodedrift/hotp-php/commit/7578eb618f2bca4f6a7121aaa75ee2b4c6fe6a94))
+- Expands version range for PHPUnit to ensure tests run against PHP 7.2 [#16](https://github.com/jakobo/hotp-php/pull/16)
+- Bump various dev dependancies [f88730](https://github.com/thecodedrift/hotp-php/commit/f88730af7a14f7e3c513616f6fb8acf3f27d30b2)
+- Test on newer PHP versions [#15](https://github.com/thecodedrift/hotp-php/pull/15) [86c62](https://github.com/thecodedrift/hotp-php/commit/86c624bf82272870549bef7b6bea199f633fceb0) [584992](https://github.com/thecodedrift/hotp-php/commit/58499240cf0a3a7725165d503284b0e311a441fa)
 
 # 2.0.0 (Dec 20, 2020)
 - Code coverage reporting added (:heart: [reedy](https://github.com/reedy))
