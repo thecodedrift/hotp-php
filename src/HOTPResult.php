@@ -69,10 +69,10 @@ class HOTPResult
             $offset = $hmacResult[19] & 0xf;
 
             $this->decimal = (
-                (($hmacResult[$offset+0] & 0x7f) << 24) |
-                (($hmacResult[$offset+1] & 0xff) << 16) |
-                (($hmacResult[$offset+2] & 0xff) << 8) |
-                ($hmacResult[$offset+3] & 0xff)
+                (($hmacResult[$offset + 0] & 0x7f) << 24) |
+                (($hmacResult[$offset + 1] & 0xff) << 16) |
+                (($hmacResult[$offset + 2] & 0xff) << 8) |
+                ($hmacResult[$offset + 3] & 0xff)
             );
         }
         return $this->decimal;
