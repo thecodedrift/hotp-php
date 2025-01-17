@@ -1,5 +1,6 @@
 {
     "name": "jakobo/hotp-php",
+    "version": "2.0.0",
     "description": "HOTP simplifies One Time Password systems for PHP Authentication",
     "license": "BSD-3-Clause",
     "authors" : [
