@@ -1,12 +1,18 @@
 {
     "name": "jakobo/hotp-php",
-    "version": "2.0.0",
+    "version": "2.0.1",
+    "repositories": {
+        "github": {
+            "type": "github",
+            "url": "https://github.com/thecodedrift/hotp-php"
+        }
+    },
     "description": "HOTP simplifies One Time Password systems for PHP Authentication",
     "license": "BSD-3-Clause",
     "authors" : [
         {
             "name": "Jakob Heuser",
-            "email": "jakob@felocity.org"
+            "email": "oss@codedrift.com"
         }
     ],
     "autoload": {
