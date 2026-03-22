@@ -5,6 +5,7 @@
 .php-cs-fixer.php export-ignore
 composer.json export-ignore
 dev/ export-ignore
+docker-compose.yml export-ignore
 example.php export-ignore
 phpunit.xml export-ignore
 tests/ export-ignore
