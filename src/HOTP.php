@@ -11,7 +11,6 @@ namespace jakobo\HOTP;
  * @author Jakob Heuser (firstname)@felocity.com
  * @copyright 2011-2020
  * @license BSD-3-Clause
- * @version 1.0
  */
 class HOTP
 {

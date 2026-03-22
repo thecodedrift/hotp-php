@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 /**
  * @copyright 2020
  * @license BSD-3-Clause
- * @version 1.0
  *
  * @covers \jakobo\HOTP\HOTP
  * @covers \jakobo\HOTP\HOTPResult
