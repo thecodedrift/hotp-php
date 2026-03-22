@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
  * @copyright 2020
  * @license BSD-3-Clause
  * @version 1.0
+ *
+ * @covers \jakobo\HOTP\HOTP
+ * @covers \jakobo\HOTP\HOTPResult
  */
 class HOTPTest extends TestCase
 {
@@ -100,17 +103,7 @@ class HOTPTest extends TestCase
         ];
     }
 
-    /**
-     * @param int $seed
-     * @param array $result
-     *
-     * @covers \jakobo\HOTP\HOTP::generateByCounter
-     * @covers \jakobo\HOTP\HOTPResult::toString
-     * @covers \jakobo\HOTP\HOTPResult::toHex
-     * @covers \jakobo\HOTP\HOTPResult::toDec
-     * @covers \jakobo\HOTP\HOTPResult::toHOTP
-     * @dataProvider provideHOTP
-     */
+    /** @dataProvider provideHOTP */
     public function testHOTP(int $seed, array $result): void
     {
         $hotp = HOTP::generateByCounter(self::KEY, $seed);
@@ -147,14 +140,7 @@ class HOTPTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $seed
-     * @param string $result
-     *
-     * @covers \jakobo\HOTP\HOTP::generateByTime
-     * @covers \jakobo\HOTP\HOTPResult::toHOTP
-     * @dataProvider provideTOTP
-     */
+    /** @dataProvider provideTOTP */
     public function testTOTP(string $seed, string $result): void
     {
         $totp = HOTP::generateByTime(self::KEY, 30, $seed);
@@ -183,13 +169,7 @@ class HOTPTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $seed
-     * @param string[] $result
-     * @covers \jakobo\HOTP\HOTP::generateByTimeWindow
-     * @covers \jakobo\HOTP\HOTPResult::toHOTP
-     * @dataProvider provideGenerateByTimeWindow
-     */
+    /** @dataProvider provideGenerateByTimeWindow */
     public function testGenerateByTimeWindow(string $seed, array $result): void
     {
         $results = HOTP::generateByTimeWindow(
