@@ -19,11 +19,6 @@ class HOTPResult
     protected $decimal;
     protected $hex;
 
-    /**
-     * Build an HOTP Result
-     * @param string $value the value to construct with
-     * @codeCoverageIgnore
-     */
     public function __construct(string $value)
     {
         // store raw
@@ -32,7 +27,6 @@ class HOTPResult
 
     /**
      * Returns the string version of the HOTP
-     * @return string
      */
     public function toString(): string
     {
@@ -41,7 +35,6 @@ class HOTPResult
 
     /**
      * Returns the hex version of the HOTP
-     * @return string
      */
     public function toHex(): string
     {
@@ -53,7 +46,6 @@ class HOTPResult
 
     /**
      * Returns the decimal version of the HOTP
-     * @return int
      */
     public function toDec(): int
     {

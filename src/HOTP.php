@@ -23,7 +23,7 @@ class HOTP
      */
     public static function generateByCounter(string $key, int $counter): HOTPResult
     {
-        // the counter value can be more than one byte long,
+        // The counter value can be more than one byte long,
         // so we need to pack it down properly.
         $curCounter = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
         for ($i = 7; $i >= 0; $i--) {
@@ -69,7 +69,7 @@ class HOTP
      * @param int $min the minimum window to accept before $timestamp
      * @param int $max the maximum window to accept after $timestamp
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
-     * @return array of HOTPResult
+     * @return HOTPResult[]
      */
     public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, $timestamp = false): array
     {
