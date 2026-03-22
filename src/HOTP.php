@@ -31,8 +31,6 @@ class HOTP
             $counter = $counter >> 8;
         }
 
-        $binCounter = implode($curCounter);
-
         // Pad to 8 chars
         $binCounter = str_pad(implode("", $curCounter), 8, chr(0), STR_PAD_LEFT);
 
