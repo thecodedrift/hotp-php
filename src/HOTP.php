@@ -46,7 +46,7 @@ class HOTP
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
      * @return HOTPResult a HOTP Result which can be truncated or output
      */
-    public static function generateByTime(string $key, int $window, $timestamp = false): HOTPResult
+    public static function generateByTime(string $key, int $window, int|false $timestamp = false): HOTPResult
     {
         if (!$timestamp && $timestamp !== 0) {
             // @codeCoverageIgnoreStart
@@ -70,7 +70,7 @@ class HOTP
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
      * @return HOTPResult[]
      */
-    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, $timestamp = false): array
+    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false): array
     {
         if (!$timestamp && $timestamp !== 0) {
             // @codeCoverageIgnoreStart

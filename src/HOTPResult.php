@@ -14,14 +14,11 @@ namespace jakobo\HOTP;
  */
 class HOTPResult
 {
-    protected $hash;
-    protected $decimal;
-    protected $hex;
+    private ?int $decimal = null;
+    private ?string $hex = null;
 
-    public function __construct(string $value)
+    public function __construct(private string $hash)
     {
-        // store raw
-        $this->hash = $value;
     }
 
     /**
