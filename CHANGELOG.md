@@ -1,5 +1,12 @@
 # Changelog
 
+# 2.2.0 (Jul 10, 2026)
+- `generateByTime` and `generateByTimeWindow` now reject a non-positive `$window` (previously an uncaught `DivisionByZeroError`) and a negative `$timestamp` (previously a silent, unintended counter), throwing `InvalidArgumentException` instead.
+- `generateByCounter`, `generateByTime` and `generateByTimeWindow` accept an optional `$algorithm` parameter (defaults to `sha1`), enabling HMAC-SHA-256 and HMAC-SHA-512 TOTP per RFC 6238.
+- Fixed dynamic truncation in `HOTPResult` to derive the RFC 4226 offset from the digest's actual final byte, so wider SHA-256/512 digests truncate correctly (no change for SHA-1).
+- The time-based methods accept an optional `$startTime` parameter (RFC 6238 "T0", defaults to `0`) to set the Unix time from which time steps are counted.
+- All new behavior is validated against the RFC 6238 Appendix B SHA-1, SHA-256 and SHA-512 test vectors. These additions are backwards compatible.
+
 # 2.1.0 (Apr 13, 2026)
 - Adopts PSR-12 syntax everywhere (:heart: [jrzepa](https://github.com/jrzepa) [#12](https://github.com/thecodedrift/hotp-php/commit/7578eb618f2bca4f6a7121aaa75ee2b4c6fe6a94))
 - Expands version range for PHPUnit to ensure tests run against PHP 7.2 [#16](https://github.com/jakobo/hotp-php/pull/16)
