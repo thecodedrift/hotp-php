@@ -48,10 +48,18 @@ class HOTP
      */
     public static function generateByTime(string $key, int $window, int|false $timestamp = false): HOTPResult
     {
+        if ($window <= 0) {
+            throw new \InvalidArgumentException('$window must be a positive integer');
+        }
+
         if (!$timestamp && $timestamp !== 0) {
             // @codeCoverageIgnoreStart
             $timestamp = self::getTime();
             // @codeCoverageIgnoreEnd
+        }
+
+        if ($timestamp < 0) {
+            throw new \InvalidArgumentException('$timestamp must not be negative');
         }
 
         $counter = intval($timestamp / $window) ;
@@ -72,10 +80,18 @@ class HOTP
      */
     public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false): array
     {
+        if ($window <= 0) {
+            throw new \InvalidArgumentException('$window must be a positive integer');
+        }
+
         if (!$timestamp && $timestamp !== 0) {
             // @codeCoverageIgnoreStart
             $timestamp = self::getTime();
             // @codeCoverageIgnoreEnd
+        }
+
+        if ($timestamp < 0) {
+            throw new \InvalidArgumentException('$timestamp must not be negative');
         }
 
         $counter = intval($timestamp / $window);
