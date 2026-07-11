@@ -69,6 +69,10 @@ class HOTP
             throw new \InvalidArgumentException('$timestamp must not be negative');
         }
 
+        if ($timestamp - $startTime < 0) {
+            throw new \InvalidArgumentException('$timestamp must not be earlier than $startTime');
+        }
+
         $counter = intval(($timestamp - $startTime) / $window) ;
 
         return self::generateByCounter($key, $counter, $algorithm);
@@ -101,6 +105,10 @@ class HOTP
 
         if ($timestamp < 0) {
             throw new \InvalidArgumentException('$timestamp must not be negative');
+        }
+
+        if ($timestamp - $startTime < 0) {
+            throw new \InvalidArgumentException('$timestamp must not be earlier than $startTime');
         }
 
         $counter = intval(($timestamp - $startTime) / $window);

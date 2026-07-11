@@ -193,6 +193,19 @@ class HOTPTest extends TestCase
         $this->assertEquals($baseline->toHOTP(8), $withStartTime->toHOTP(8));
     }
 
+    public function testGenerateByTimeRejectsStartTimeLaterThanTimestamp(): void
+    {
+        // A start time after $timestamp would yield a negative effective step.
+        $this->expectException(\InvalidArgumentException::class);
+        HOTP::generateByTime(self::KEY, 30, 30, 'sha1', 60);
+    }
+
+    public function testGenerateByTimeWindowRejectsStartTimeLaterThanTimestamp(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        HOTP::generateByTimeWindow(self::KEY, 30, -1, 1, 30, 'sha1', 60);
+    }
+
     public function testGenerateByTimeWindowHonorsStartTime(): void
     {
         $withStartTime = HOTP::generateByTimeWindow(self::KEY, 30, -1, 1, 88, 'sha1', 29);
