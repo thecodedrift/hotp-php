@@ -150,6 +150,38 @@ class HOTPTest extends TestCase
         );
     }
 
+    public function provideTOTPAlgorithms(): array
+    {
+        // Expected TOTP values from RFC 6238 Appendix B; the per-algorithm keys
+        // (20/32/64-byte ASCII seeds) come from the Appendix A reference code.
+        return [
+            // [algorithm, key, timestamp, expected 8-digit TOTP]
+            ['sha1', '12345678901234567890', '59', '94287082'],
+            ['sha1', '12345678901234567890', '1234567890', '89005924'],
+            ['sha256', '12345678901234567890123456789012', '59', '46119246'],
+            ['sha256', '12345678901234567890123456789012', '1234567890', '91819424'],
+            ['sha512', '1234567890123456789012345678901234567890123456789012345678901234', '59', '90693936'],
+            ['sha512', '1234567890123456789012345678901234567890123456789012345678901234', '1234567890', '93441116'],
+        ];
+    }
+
+    /** @dataProvider provideTOTPAlgorithms */
+    public function testTOTPWithAlgorithm(string $algorithm, string $key, string $seed, string $result): void
+    {
+        $totp = HOTP::generateByTime($key, 30, $seed, $algorithm);
+
+        $this->assertEquals(
+            $result,
+            $totp->toHOTP(8)
+        );
+    }
+
+    public function testGenerateByCounterRejectsUnsupportedAlgorithm(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        HOTP::generateByCounter(self::KEY, 0, 'not-a-real-algo');
+    }
+
     public function provideGenerateByTimeWindow(): array
     {
         return [
