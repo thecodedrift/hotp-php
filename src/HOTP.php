@@ -50,9 +50,10 @@ class HOTP
      * @param int $window the size of the window a key is valid for in seconds
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
      * @param string $algorithm the HMAC hash algorithm to use, defaults to sha1
+     * @param int $startTime the Unix time to start counting time steps from (RFC 6238 "T0"), defaults to 0
      * @return HOTPResult a HOTP Result which can be truncated or output
      */
-    public static function generateByTime(string $key, int $window, int|false $timestamp = false, string $algorithm = 'sha1'): HOTPResult
+    public static function generateByTime(string $key, int $window, int|false $timestamp = false, string $algorithm = 'sha1', int $startTime = 0): HOTPResult
     {
         if ($window <= 0) {
             throw new \InvalidArgumentException('$window must be a positive integer');
@@ -68,7 +69,7 @@ class HOTP
             throw new \InvalidArgumentException('$timestamp must not be negative');
         }
 
-        $counter = intval($timestamp / $window) ;
+        $counter = intval(($timestamp - $startTime) / $window) ;
 
         return self::generateByCounter($key, $counter, $algorithm);
     }
@@ -83,9 +84,10 @@ class HOTP
      * @param int $max the maximum window to accept after $timestamp
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
      * @param string $algorithm the HMAC hash algorithm to use, defaults to sha1
+     * @param int $startTime the Unix time to start counting time steps from (RFC 6238 "T0"), defaults to 0
      * @return HOTPResult[]
      */
-    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false, string $algorithm = 'sha1'): array
+    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false, string $algorithm = 'sha1', int $startTime = 0): array
     {
         if ($window <= 0) {
             throw new \InvalidArgumentException('$window must be a positive integer');
@@ -101,7 +103,7 @@ class HOTP
             throw new \InvalidArgumentException('$timestamp must not be negative');
         }
 
-        $counter = intval($timestamp / $window);
+        $counter = intval(($timestamp - $startTime) / $window);
         $window = range($min, $max);
 
         $out = [];

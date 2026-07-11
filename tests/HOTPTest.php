@@ -182,6 +182,30 @@ class HOTPTest extends TestCase
         HOTP::generateByCounter(self::KEY, 0, 'not-a-real-algo');
     }
 
+    public function testGenerateByTimeHonorsStartTime(): void
+    {
+        // With a start time of 29 and timestamp of 88, the effective time step
+        // is (88 - 29) / 30 = counter 1, matching the RFC 6238 T=59 vector.
+        $withStartTime = HOTP::generateByTime(self::KEY, 30, 88, 'sha1', 29);
+        $baseline = HOTP::generateByTime(self::KEY, 30, 59, 'sha1', 0);
+
+        $this->assertEquals('94287082', $withStartTime->toHOTP(8));
+        $this->assertEquals($baseline->toHOTP(8), $withStartTime->toHOTP(8));
+    }
+
+    public function testGenerateByTimeWindowHonorsStartTime(): void
+    {
+        $withStartTime = HOTP::generateByTimeWindow(self::KEY, 30, -1, 1, 88, 'sha1', 29);
+        $baseline = HOTP::generateByTimeWindow(self::KEY, 30, -1, 1, 59, 'sha1', 0);
+
+        $reduce = static fn (array $results): array => array_map(
+            static fn ($r) => $r->toHOTP(6),
+            array_values($results)
+        );
+
+        $this->assertEquals($reduce($baseline), $reduce($withStartTime));
+    }
+
     public function provideGenerateByTimeWindow(): array
     {
         return [
