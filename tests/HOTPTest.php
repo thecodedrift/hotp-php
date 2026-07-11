@@ -168,6 +168,29 @@ class HOTPTest extends TestCase
         ];
     }
 
+    public function provideInvalidTimeArguments(): array
+    {
+        return [
+            'zero window'         => [0, 59],
+            'negative window'     => [-30, 59],
+            'negative timestamp'  => [30, -59],
+        ];
+    }
+
+    /** @dataProvider provideInvalidTimeArguments */
+    public function testGenerateByTimeRejectsInvalidArguments(int $window, int $timestamp): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        HOTP::generateByTime(self::KEY, $window, $timestamp);
+    }
+
+    /** @dataProvider provideInvalidTimeArguments */
+    public function testGenerateByTimeWindowRejectsInvalidArguments(int $window, int $timestamp): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        HOTP::generateByTimeWindow(self::KEY, $window, -1, 1, $timestamp);
+    }
+
     /** @dataProvider provideGenerateByTimeWindow */
     public function testGenerateByTimeWindow(string $seed, array $result): void
     {
