@@ -18,10 +18,15 @@ class HOTP
      * Generate a HOTP key based on a counter value (event based HOTP)
      * @param string $key the key to use for hashing
      * @param int $counter the number of attempts represented in this hashing
+     * @param string $algorithm the HMAC hash algorithm to use, defaults to sha1
      * @return HOTPResult a HOTP Result which can be truncated or output
      */
-    public static function generateByCounter(string $key, int $counter): HOTPResult
+    public static function generateByCounter(string $key, int $counter, string $algorithm = 'sha1'): HOTPResult
     {
+        if (!in_array($algorithm, hash_hmac_algos(), true)) {
+            throw new \InvalidArgumentException("Unsupported HMAC algorithm: {$algorithm}");
+        }
+
         // The counter value can be more than one byte long,
         // so we need to pack it down properly.
         $curCounter = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
@@ -34,7 +39,7 @@ class HOTP
         $binCounter = str_pad(implode("", $curCounter), 8, chr(0), STR_PAD_LEFT);
 
         // HMAC
-        $hash = hash_hmac('sha1', $binCounter, $key);
+        $hash = hash_hmac($algorithm, $binCounter, $key);
 
         return new HOTPResult($hash);
     }
@@ -44,9 +49,10 @@ class HOTP
      * @param string $key the key to use for hashing
      * @param int $window the size of the window a key is valid for in seconds
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
+     * @param string $algorithm the HMAC hash algorithm to use, defaults to sha1
      * @return HOTPResult a HOTP Result which can be truncated or output
      */
-    public static function generateByTime(string $key, int $window, int|false $timestamp = false): HOTPResult
+    public static function generateByTime(string $key, int $window, int|false $timestamp = false, string $algorithm = 'sha1'): HOTPResult
     {
         if ($window <= 0) {
             throw new \InvalidArgumentException('$window must be a positive integer');
@@ -64,7 +70,7 @@ class HOTP
 
         $counter = intval($timestamp / $window) ;
 
-        return self::generateByCounter($key, $counter);
+        return self::generateByCounter($key, $counter, $algorithm);
     }
 
     /**
@@ -76,9 +82,10 @@ class HOTP
      * @param int $min the minimum window to accept before $timestamp
      * @param int $max the maximum window to accept after $timestamp
      * @param int|false $timestamp a timestamp to calculate for, defaults to time()
+     * @param string $algorithm the HMAC hash algorithm to use, defaults to sha1
      * @return HOTPResult[]
      */
-    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false): array
+    public static function generateByTimeWindow(string $key, int $window, int $min = -1, int $max = 1, int|false $timestamp = false, string $algorithm = 'sha1'): array
     {
         if ($window <= 0) {
             throw new \InvalidArgumentException('$window must be a positive integer');
@@ -100,7 +107,7 @@ class HOTP
         $out = [];
         foreach ($window as $value) {
             $shiftCounter = $counter + $value;
-            $out[$shiftCounter] = self::generateByCounter($key, $shiftCounter);
+            $out[$shiftCounter] = self::generateByCounter($key, $shiftCounter, $algorithm);
         }
 
         return $out;

@@ -54,7 +54,10 @@ class HOTPResult
                 $hmacResult[] = hexdec($hex);
             }
 
-            $offset = $hmacResult[19] & 0xf;
+            // RFC 4226 dynamic truncation uses the low nibble of the digest's
+            // final byte as the offset. SHA-1 digests are 20 bytes (index 19),
+            // but wider digests (SHA-256/512) place that byte at a higher index.
+            $offset = $hmacResult[array_key_last($hmacResult)] & 0xf;
 
             $this->decimal = (
                 (($hmacResult[$offset + 0] & 0x7f) << 24) |
